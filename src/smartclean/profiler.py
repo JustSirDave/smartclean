@@ -128,22 +128,24 @@ def _infer_dtype(series: pd.Series) -> str:
 def _count_outliers_iqr(series: pd.Series) -> int:
     """
     Estimate outlier count using the IQR method.
-    Only meaningful for numeric series.
     """
-    clean = series.dropna()
-    if len(clean) < 4:
+    try:
+        clean = pd.to_numeric(series, errors="coerce").dropna()
+        if len(clean) < 4:
+            return 0
+
+        q1 = clean.quantile(0.25)
+        q3 = clean.quantile(0.75)
+        iqr = q3 - q1
+
+        if iqr == 0:
+            return 0
+
+        lower = q1 - 1.5 * iqr
+        upper = q3 + 1.5 * iqr
+        return int(((clean < lower) | (clean > upper)).sum())
+    except (TypeError, ValueError):
         return 0
-
-    q1 = clean.quantile(0.25)
-    q3 = clean.quantile(0.75)
-    iqr = q3 - q1
-
-    if iqr == 0:
-        return 0
-
-    lower = q1 - 1.5 * iqr
-    upper = q3 + 1.5 * iqr
-    return int(((clean < lower) | (clean > upper)).sum())
 
 
 def _profile_column(series: pd.Series) -> ColumnProfile:
@@ -157,8 +159,9 @@ def _profile_column(series: pd.Series) -> ColumnProfile:
     non_null = series.dropna()
     is_constant = (unique_count <= 1) and (len(non_null) > 0)
 
+    is_boolean = pd.api.types.is_bool_dtype(series) or str(series.dtype) == "boolean"
     outlier_count = (
-        _count_outliers_iqr(series) if dtype == "numeric" else 0
+        _count_outliers_iqr(series.copy()) if dtype == "numeric" and not is_boolean else 0
     )
 
     return ColumnProfile(
