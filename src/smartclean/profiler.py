@@ -8,10 +8,12 @@ modules depend on — run this first before any cleaning step.
 
 from __future__ import annotations
 
+import warnings
 from dataclasses import dataclass, field
 import numpy as np
 import pandas as pd
 
+warnings.filterwarnings("ignore")
 
 # ---------------------------------------------------------------------------
 # Data classes
@@ -108,7 +110,9 @@ def _infer_dtype(series: pd.Series) -> str:
 
         # Attempt datetime coercion on a small sample for performance
         try:
-            pd.to_datetime(sample.head(50), errors="raise")
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                pd.to_datetime(sample.head(50), errors="raise")
             return "datetime"
         except (ValueError, TypeError):
             pass
