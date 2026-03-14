@@ -42,10 +42,10 @@ dev = [
 all = ["smartclean[outliers,dev]"]
 
 [project.urls]
-Homepage = "https://github.com/yourname/smartclean"
+Homepage = "https://github.com/JustSirDave/smartclean"
 Documentation = "https://smartclean.readthedocs.io"
-Repository = "https://github.com/yourname/smartclean"
-"Bug Tracker" = "https://github.com/yourname/smartclean/issues"
+Repository = "https://github.com/JustSirDave/smartclean"
+"Bug Tracker" = "https://github.com/JustSirDave/smartclean/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/smartclean"]

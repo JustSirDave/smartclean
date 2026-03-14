@@ -71,7 +71,7 @@ from smartclean.modules.outliers import (
 )
 
 __version__ = "0.1.0"
-__author__  = "Your Name"
+__author__  = "David Ekundayo Lucas"
 __all__ = [
     # Core
     "auto_clean",
