@@ -67,19 +67,19 @@ SmartClean addresses this gap.
 ## Installation
 
 ```bash
-pip install smartclean
+pip install dfsmartclean
 ```
 
 With optional Z-score outlier detection (requires scipy):
 
 ```bash
-pip install smartclean[outliers]
+pip install dfsmartclean[outliers]
 ```
 
 For development:
 
 ```bash
-pip install smartclean[dev]
+pip install dfsmartclean[dev]
 ```
 
 **Requirements:** Python 3.9+, pandas >= 1.5.0, numpy >= 1.23.0
